@@ -1,0 +1,21 @@
+#!/bin/bash
+echo "hello Gate"
+echo $USER
+echo $HOME
+
+
+cd $HOME/build/biomio-gate
+
+ls -l
+
+pwd
+
+docker_login=`aws ecr get-login --region us-west-2`
+$docker_login
+
+docker build --build-arg "CACHE_DATE=$(date)" -t gate_full .
+
+docker tag gate_full:latest 143475945728.dkr.ecr.us-west-2.amazonaws.com/gate_full:latest
+docker push 143475945728.dkr.ecr.us-west-2.amazonaws.com/gate_full:latest
+
+
